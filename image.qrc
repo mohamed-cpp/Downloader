@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>img/checkbox_indeterminate_focus.png</file>
+    <file>img/undock.png</file>
+    <file>img/close.png</file>
+    <file>img/warning.png</file>
+    <file>img/error.png</file>
+    <file>img/critical.png</file>
+    <file>img/question.png</file>
+    <file>img/Folder-Open-icon.png</file>
+    <file>img/download.png</file>
+    <file>img/downloader.png</file>
+    <file>img/Big_smile.png</file>
+  </qresource>
+</RCC>
