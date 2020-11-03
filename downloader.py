@@ -54,10 +54,6 @@ class MainApp(QMainWindow, FORM_CLASS):
         else:
             QMessageBox.warning(self, "Url", "Please add url before choose folder")
 
-
-    def info (self):
-        QMessageBox.information(self, "Created By Me    ", "Yes I Did It :P :D")
-
     def changeStyle (self,styleName):
         if not styleName == None:
             self.config.setSetting('DEFAULT','theme',styleName)
