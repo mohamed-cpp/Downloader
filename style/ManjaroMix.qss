@@ -8,6 +8,9 @@ Available at: https://github.com/GTRONICK/QSS/blob/master/ManjaroMix.qss
 QMainWindow {
 	background-color:#151a1e;
 }
+QMessageBox {
+	background-color:#151a1e;
+}
 QCalendar {
 	background-color: #151a1e;
 }

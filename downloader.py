@@ -8,6 +8,7 @@ import sys
 import urllib.request
 from config import Config
 import cgi
+import logSys
 
 
 FORM_CLASS,_=loadUiType(path.join(path.dirname(__file__),"main.ui"))
@@ -22,14 +23,11 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.Handel_Buttons()
         self.Handel_Menu()
 
-
-
-
     def Handel_UI(self):
         self.setWindowTitle("Fire Downloader")
-        self.setFixedSize(708,269)
-        self.changeStyle(self.config.getSetting('DEFAULT','theme'))
-        # self.setWindowIcon(QIcon('like (1).png'))
+        self.setFixedSize(708, 269)
+        self.changeStyle(self.config.getSetting('DEFAULT', 'theme'))
+        # self.setWindowIcon(QIcon('image.png')) // for icon
 
     def Handel_Buttons(self):
         self.pushButton.clicked.connect(self.Download)
@@ -49,7 +47,7 @@ class MainApp(QMainWindow, FORM_CLASS):
             save_place = QFileDialog.getSaveFileName(self, caption="Choose folder to download" , directory=path+filename,filter="(*.*)")
             text = str(save_place)
             name = (text[2:].split(',')[0].replace("'", ""))
-            self.config.setSetting('DEFAULT','path',name.replace(name.split('/')[-1], ""))
+            self.config.setSetting('DEFAULT', 'path', name.replace(name.split('/')[-1], ""))
             self.lineEdit_2.setText(name)
         else:
             QMessageBox.warning(self, "Url", "Please add url before choose folder")
@@ -60,15 +58,14 @@ class MainApp(QMainWindow, FORM_CLASS):
             qss_file = open('style/'+styleName+'.qss').read()
             self.setStyleSheet(qss_file)
 
-    def Handel_Progress(self,blocknum, blocksize , totalsize):
+    def Handel_Progress(self, blocknum, blocksize , totalsize):
         read= blocknum * blocksize
         if totalsize > 0:
             percent= read * 100 / totalsize
             self.progressBar.setValue(percent)
             QApplication.processEvents()
 
-
-    def getFilename(self,url):
+    def getFilename(self, url):
         try:
             remotefile = urllib.request.urlopen(url)
             blah = remotefile.info()['Content-Disposition']
@@ -77,8 +74,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         except:
             head, tail = os.path.split(url)
             filename = tail
-        return filename;
-
+        return filename
 
     def Download(self):
         url = self.lineEdit.text()
@@ -86,7 +82,8 @@ class MainApp(QMainWindow, FORM_CLASS):
 
         try:
             urllib.request.urlretrieve(url , save_location,self.Handel_Progress)
-        except Exception:
+        except Exception as err:
+            logSys.setAppError(err)
             QMessageBox.warning(self, "Oops", "Error")
             return
 
@@ -96,11 +93,12 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.lineEdit_2.setText('')
 
 def main():
+    sys.excepthook = logSys.handle_exception
     app = QApplication(sys.argv)
     window = MainApp()
     window.show()
     app.exec_()
-	
+
 if __name__ == '__main__':
     main()
 
